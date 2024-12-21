@@ -1,30 +1,36 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:grid/main.dart';
 
+import 'integration/grid_flow_tests.dart';
+import 'unit/grid_search_tests.dart';
+import 'widget/grid_app_test.dart';
+
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group("Grid application test", () {
+    group("Widget test", () {
+      testWidgets("App should load correctly", (tester) async {
+        await tester.pumpWidget(const MaterialApp(home: GridApp()));
+        expect(find.text('Welcome to Grid Search App'), findsOneWidget);
+        expect(find.byType(SplashScreen), findsOneWidget);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+        //wait for splash screen durations
+        await tester.pump(const Duration(milliseconds: 5000));
+        await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+        expect(find.byType(GridScreen), findsOneWidget);
+      });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      gridAppTest();
+    });
+
+    group('Unit Test', () {
+      gridSearchTests(); // Unit tests
+    });
+
+    group("Integration Test", () {
+      gridFlowTests(); // Integration tests
+    });
   });
 }
