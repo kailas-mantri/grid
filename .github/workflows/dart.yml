@@ -27,8 +27,12 @@ jobs:
         with:
           flutter-version: '3.3.4'
           channel: 'stable'
-        
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+
+      - name: Set up Dart
+      # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - uses: dart-lang/setup-dart@v2
+        with:
+          sdk-version: '3.3.4'
 
       - name: Install dependencies
         run: flutter pub get
