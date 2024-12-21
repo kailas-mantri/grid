@@ -22,6 +22,11 @@ jobs:
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+        
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
       - name: Install dependencies
@@ -40,3 +45,54 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run tests
         run: flutter test
+
+      # Build APK
+      - name: Build app
+        run: |
+          flutter build apk --release #change to relavent target (i.e. ios, web)
+
+      # Upload APK as artifact (Optional step)
+      #- name: Upload APK as artifact
+      #  if: success()  # Only upload if the build was successful
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: flutter-apk
+      #    path: build/app/outputs/flutter-apk/*.apk
+
+  build_ios:
+    runs-on: macos-latest #for IOS IPA Build 
+    needs: build #Ensure the build job for Android completes before ios build start
+    steps:
+      # checkout the code from the repository
+      - uses: actions/checkout@v4
+
+      # setup the flutter
+      - name: Set up flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      # Install flutter dependencies
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Analyze the project for errors
+      - name: Analyze Project source
+        run: flutter analyze
+
+      # Run Tests
+      - name: Run Tests
+        run: flutter test
+
+      # Build IPA
+      - name: Build IPA
+        run: flutter build ios -- release --no-codesign #Avoid code sign in CI
+
+      # Upload IPA as artifact (Optional step)
+      #- name: Upload IPA as artifact
+      #  if: success()  # Only upload if the build was successful
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: flutter-ipa
+      #    path: build/ios/iphoneos/*.ipa
+      
