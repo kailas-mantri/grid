@@ -37,7 +37,7 @@ class SplashState extends State<SplashScreen> {
   }
 
   void navigateToGridScreen() {
-    Timer(Duration(milliseconds: 5000), () {
+    Timer(const Duration(milliseconds: 5000), () {
       Navigator.pushReplacementNamed(context, '/gridInput');
     });
   }
