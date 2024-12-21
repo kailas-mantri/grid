@@ -29,6 +29,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashState extends State<SplashScreen> {
+
   @override
   void initState() {
     super.initState();
@@ -36,14 +37,14 @@ class SplashState extends State<SplashScreen> {
   }
 
   void navigateToGridScreen() {
-    Timer(const Duration(milliseconds: 5000), () {
+    Timer(Duration(milliseconds: 5000), () {
       Navigator.pushReplacementNamed(context, '/gridInput');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(
         child: Padding(
