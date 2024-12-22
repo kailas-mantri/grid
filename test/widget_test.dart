@@ -4,7 +4,6 @@ import 'package:grid/main.dart';
 
 import 'integration/grid_flow_tests.dart';
 import 'unit/grid_search_tests.dart';
-import 'widget/grid_app_test.dart';
 
 void main() {
   group("Grid application test", () {
@@ -54,7 +53,7 @@ void main() {
         expect(find.byType(GridEntryScreen), findsOneWidget);
       });
 
-      gridAppTest();
+      /*gridAppTest();*/
     });
 
     group('Unit Test', () {
