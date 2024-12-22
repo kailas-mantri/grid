@@ -56,10 +56,6 @@ jobs:
         run: flutter test
 
       # Build APK
-  build_apk:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
       - name: Build app
         run: |
           flutter build apk --release #change to relavent target (i.e. ios, web)
@@ -74,7 +70,7 @@ jobs:
 
   build_ios:
     runs-on: macos-latest #for IOS IPA Build 
-    needs: build_apk #Ensure the build job for Android completes before ios build start
+    needs: test #Ensure the build job for Android completes before ios build start
     steps:
       # checkout the code from the repository
       - uses: actions/checkout@v4
