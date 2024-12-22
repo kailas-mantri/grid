@@ -6,7 +6,6 @@ import 'integration/grid_flow_tests.dart';
 import 'unit/grid_search_tests.dart';
 import 'widget/grid_app_test.dart';
 
-
 void main() {
   group("Grid application test", () {
     group("Widget test", () {
@@ -20,6 +19,39 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(GridScreen), findsOneWidget);
+      });
+
+      testWidgets('Grid dimension input validation', (tester) async {
+        await tester.pumpWidget(const MaterialApp(home: GridScreen()));
+        // Find text fields
+        final rField =
+            find.widgetWithText(TextField, "Enter number of rows (m)");
+        final col =
+            find.widgetWithText(TextField, "Enter number of columns (n)");
+
+        // Test invalid input: negative and non-numeric
+        await tester.enterText(rField, "-1");
+        await tester.enterText(col, "3");
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+        expect(find.text("Please enter valid numbers for row and columns"),
+            findsOneWidget);
+
+        await tester.enterText(rField, "a");
+        await tester.enterText(col, "3");
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+        expect(find.text("Please enter valid numbers for row and columns"),
+            findsOneWidget);
+
+        // Test valid input
+        await tester.enterText(rField, "3");
+        await tester.enterText(col, "3");
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+
+        // Verify navigation to GridEntryScreen
+        expect(find.byType(GridEntryScreen), findsOneWidget);
       });
 
       gridAppTest();

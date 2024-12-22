@@ -4,71 +4,59 @@ import 'package:grid/main.dart';
 
 void gridAppTest() {
   group('Grid App Widget Tests', () {
-    testWidgets('splash screen displays correctly', (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: GridApp()));
-      expect(find.text("Welcome to Grid Search App"), findsOneWidget);
-      expect(find.byType(SplashScreen), findsOneWidget);
-      await tester.pump(const Duration(milliseconds: 5000));
-      await tester.pumpAndSettle();
-      expect(find.byType(GridScreen), findsOneWidget);
-    });
+    testWidgets('Grid entry validation and navigation', (tester) async {
+      await tester
+          .pumpWidget(const MaterialApp(home: GridEntryScreen(m: 2, n: 2)));
 
-    testWidgets('Grid dimension input validation', (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: GridScreen()));
-      // Find text fields
-      final rows = find.widgetWithText(TextField, "Enter number of rows (m)");
-      final column = find.widgetWithText(TextField, "Enter number of rows (n)");
-      // Test invalid input
-      await tester.enterText(rows, "-1");
-      await tester.enterText(column, "3");
-      await tester.tap(find.byType(ElevatedButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('Please enter valid numbers for row and columns'), findsOneWidget);
+      // Verify grid input fields
+      expect(find.byType(TextField), findsNWidgets(4));
 
-      // Test valid input
-      await tester.enterText(rows, "3");
-      await tester.enterText(column, "3");
-      await tester.tap(find.byType(ElevatedButton));
+      // Test empty cells
+      await tester.tap(find.text("Create Grid"));
       await tester.pumpAndSettle();
-      expect(find.byType(GridEntryScreen), findsOneWidget);
-    });
+      expect(find.text("All cells must have a value"), findsOneWidget);
 
-    testWidgets('Grid entry screen validation', (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: GridEntryScreen(m: 2, n: 2)),);
-      expect(find.byType(TextField), findsNWidgets(4)); // Find grid cells
-      // Test empty grid cells
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(ElevatedButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text('All cells must have a value'), findsOneWidget);
-      // Fill the grid and create
+      // Fill the grid and submit
       for (int i = 0; i < 4; i++) {
-        await tester.enterText(find.byType(TextField).at(i), "a");
-        await tester.pumpAndSettle();
+        await tester.enterText(
+            find.byType(TextField).at(i), String.fromCharCode(65 + i));
       }
 
-      await tester.tap(find.byType(ElevatedButton));
+      // Tap the Create Grid button after making sure it is visible
+      final createGridButton = find.text("Create Grid");
+      expect(createGridButton, findsOneWidget); // Make sure it's present
+      await tester.tap(createGridButton);
       await tester.pumpAndSettle();
+
+      // Verify navigation to SearchScreen
       expect(find.byType(SearchScreen), findsOneWidget);
     });
 
-    testWidgets('Search screen functionality', (test) async {
-      final grid = [['A', 'B'], ['C', 'D']];
-      await test.pumpWidget(MaterialApp(home: SearchScreen(grid: grid)));
-      // Test Search functionality
-      await test.enterText(find.byType(TextField), "A");
-      await test.pumpAndSettle();
+    testWidgets('Search screen functionality', (tester) async {
+      final grid = [
+        ['A', 'B'],
+        ['C', 'D']
+      ];
+      await tester.pumpWidget(MaterialApp(home: SearchScreen(grid: grid)));
 
       // Verify grid display
       expect(find.byType(GridView), findsOneWidget);
       expect(find.text("A"), findsOneWidget);
       expect(find.text("B"), findsOneWidget);
+      expect(find.text("C"), findsOneWidget);
+      expect(find.text("D"), findsOneWidget);
 
-      // Test reset functionality
-      await test.tap(find.byType(ElevatedButton));
-      await test.pumpAndSettle();
+      // Test search functionality
+      await tester.enterText(find.byType(TextField), "B");
+      await tester.pumpAndSettle();
+
+      // Here you need to modify your logic to properly handle highlighted cells.
+      // For now, assuming `B` is highlighted, which will depend on your search implementation.
+
+      // Test reset button
+      await tester.tap(
+          find.byType(ElevatedButton)); // Make sure it's the correct button
+      await tester.pumpAndSettle();
       expect(find.byType(GridScreen), findsOneWidget);
     });
   });

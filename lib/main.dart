@@ -29,7 +29,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -243,6 +242,15 @@ class SearchScreen extends StatefulWidget {
 class SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   List<List<bool>>? _highlighted;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Initialize _highlighted with false values to avoid null errors
+    _highlighted = List.generate(widget.grid.length,
+        (_) => List.generate(widget.grid[0].length, (_) => false));
+  }
 
   void searchWord(String word) {
     word = word.toUpperCase();

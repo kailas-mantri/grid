@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grid/main.dart';
 
 void gridSearchTests() {
   group("Grid Search Algorithm Tests", () {
-    late SearchScreenState searchScreenState;
-    late List<List<String>> testGrid;
+    late SearchScreen searchScreen;
+    late dynamic testGrid;
 
-    setUp(() {
+    testWidgets("Setup and test horizontal search", (tester) async {
       testGrid = [
         ['H', 'E', 'L', 'L', 'O'],
         ['W', 'O', 'R', 'L', 'D'],
@@ -15,17 +16,15 @@ void gridSearchTests() {
         ['D', 'A', 'R', 'T', 'X']
       ];
 
-      final searchScreen = SearchScreen(grid: testGrid);
-      searchScreenState = searchScreen.createState();
+      // Pump the SearchScreen widget into the widget tree
+      searchScreen = SearchScreen(grid: testGrid);
+      await tester.pumpWidget(MaterialApp(home: searchScreen));
+      await tester.pump(); // Wait for any animations to complete
 
-      // Manually call initState if necessary
-      /* searchScreenState.initState();
-      searchScreenState.setState(() {
-        searchScreenState.searchWord('');
-      });*/
-    });
+      // Proceed with the test now that the widget is rendered
+      final searchScreenState =
+          tester.state<SearchScreenState>(find.byType(SearchScreen));
 
-    test('Horizontal word search test', () {
       searchScreenState.searchWord('HELLO');
       var highlighted = searchScreenState.highlighted;
 
@@ -37,7 +36,24 @@ void gridSearchTests() {
       expect(highlighted[1][0], false);
     });
 
-    test('Vertical word search test', () {
+    testWidgets('Vertical word search test', (WidgetTester tester) async {
+      testGrid = [
+        ['H', 'E', 'L', 'L', 'O'],
+        ['W', 'O', 'R', 'L', 'D'],
+        ['T', 'E', 'S', 'T', 'S'],
+        ['F', 'L', 'U', 'T', 'R'],
+        ['D', 'A', 'R', 'T', 'X']
+      ];
+
+      // Pump the SearchScreen widget into the widget tree
+      searchScreen = SearchScreen(grid: testGrid);
+      await tester.pumpWidget(MaterialApp(home: searchScreen));
+      await tester.pump(); // Wait for any animations to complete
+
+      // Proceed with the test now that the widget is rendered
+      final searchScreenState =
+          tester.state<SearchScreenState>(find.byType(SearchScreen));
+
       searchScreenState.searchWord('WORLD');
       var highlighted = searchScreenState.highlighted;
 
@@ -48,7 +64,24 @@ void gridSearchTests() {
       expect(highlighted[1][4], true);
     });
 
-    test('Diagonal word search test', () {
+    testWidgets('Diagonal word search test', (tester) async {
+      testGrid = [
+        ['H', 'E', 'L', 'L', 'O'],
+        ['W', 'O', 'R', 'L', 'D'],
+        ['T', 'E', 'S', 'T', 'S'],
+        ['F', 'L', 'U', 'T', 'R'],
+        ['D', 'A', 'R', 'T', 'X']
+      ];
+
+      // Pump the SearchScreen widget into the widget tree
+      searchScreen = SearchScreen(grid: testGrid);
+      await tester.pumpWidget(MaterialApp(home: searchScreen));
+      await tester.pump(); // Wait for any animations to complete
+
+      // Proceed with the test now that the widget is rendered
+      final searchScreenState =
+          tester.state<SearchScreenState>(find.byType(SearchScreen));
+
       searchScreenState.searchWord('TEST');
       var highlighted = searchScreenState.highlighted;
 
@@ -58,7 +91,24 @@ void gridSearchTests() {
       expect(highlighted[2][3], true);
     });
 
-    test('Non-existent word search test', () {
+    testWidgets('Non-existent word search test', (WidgetTester tester) async {
+      testGrid = [
+        ['H', 'E', 'L', 'L', 'O'],
+        ['W', 'O', 'R', 'L', 'D'],
+        ['T', 'E', 'S', 'T', 'S'],
+        ['F', 'L', 'U', 'T', 'R'],
+        ['D', 'A', 'R', 'T', 'X']
+      ];
+
+      // Pump the SearchScreen widget into the widget tree
+      searchScreen = SearchScreen(grid: testGrid);
+      await tester.pumpWidget(MaterialApp(home: searchScreen));
+      await tester.pump(); // Wait for any animations to complete
+
+      // Proceed with the test now that the widget is rendered
+      final searchScreenState =
+          tester.state<SearchScreenState>(find.byType(SearchScreen));
+
       searchScreenState.searchWord('XYZ');
       var highlighted = searchScreenState.highlighted;
 
@@ -69,7 +119,24 @@ void gridSearchTests() {
       }
     });
 
-    test('Case insensitive search test', () {
+    testWidgets('Case insensitive search test', (tester) async {
+      testGrid = [
+        ['H', 'E', 'L', 'L', 'O'],
+        ['W', 'O', 'R', 'L', 'D'],
+        ['T', 'E', 'S', 'T', 'S'],
+        ['F', 'L', 'U', 'T', 'R'],
+        ['D', 'A', 'R', 'T', 'X']
+      ];
+
+      // Pump the SearchScreen widget into the widget tree
+      searchScreen = SearchScreen(grid: testGrid);
+      await tester.pumpWidget(MaterialApp(home: searchScreen));
+      await tester.pump(); // Wait for any animations to complete
+
+      // Proceed with the test now that the widget is rendered
+      final searchScreenState =
+          tester.state<SearchScreenState>(find.byType(SearchScreen));
+
       searchScreenState.searchWord('hello');
       var highlighted = searchScreenState.highlighted;
 
