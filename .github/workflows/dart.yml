@@ -53,7 +53,7 @@ jobs:
           channel: 'stable'
 
       - name: Run tests
-        run: flutter test --exclude test/widget/grid_app_test.dart
+        run: flutter test
 
       # Build APK
   build_apk:
