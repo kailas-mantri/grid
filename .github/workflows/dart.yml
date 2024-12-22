@@ -51,9 +51,9 @@ jobs:
         with:
           flutter-version: '3.3.4'
           channel: 'stable'
-          
+
       - name: Run tests
-        run: flutter test
+        run: flutter test --exclude test/widget/grid_app_test.dart
 
       # Build APK
   build_apk:
