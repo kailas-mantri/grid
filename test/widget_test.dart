@@ -52,8 +52,6 @@ void main() {
         // Verify navigation to GridEntryScreen
         expect(find.byType(GridEntryScreen), findsOneWidget);
       });
-
-      /*gridAppTest();*/
     });
 
     group('Unit Test', () {
