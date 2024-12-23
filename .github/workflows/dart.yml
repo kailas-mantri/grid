@@ -61,11 +61,10 @@ jobs:
 
       # Upload APK as artifact (Optional step)
       #- name: Upload APK as artifact
-      #  if: success()  # Only upload if the build was successful
       #  uses: actions/upload-artifact@v3
       #  with:
       #    name: flutter-apk
-      #    path: build/app/outputs/flutter-apk/*.apk
+      #    path: build/app/outputs/flutter-apk/app-release.apk
 
   build_ios:
     runs-on: macos-latest #for IOS IPA Build 
