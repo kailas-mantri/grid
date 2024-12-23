@@ -54,10 +54,18 @@ jobs:
       - name: Run tests
         run: flutter test
 
-      # Build APK
+      - name: Check Flutter version
+        run: flutter --version
+
+      - name: Check Gradle version
+        run: ./gradlew --version
+
+      # Build APK #change to relavent target (i.e. ios, web)
       - name: Build app
         run: |
-          flutter build apk --release #change to relavent target (i.e. ios, web)
+          flutter clean
+          flutter pub get
+          flutter build apk --release -v
 
       # Upload APK as artifact (Optional step)
       #- name: Upload APK as artifact
