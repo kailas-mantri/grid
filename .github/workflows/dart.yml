@@ -30,8 +30,12 @@ jobs:
       - run: flutter test
 
       
+      - name: Make gradlew executable
+        run: chmod +x ./android/gradlew
+        working-directory: android
+      
       - name: Check Gradle version
-        run: ./android/gradlew --version
+        run: ./gradlew --version
         working-directory: android
         
       - run: flutter build apk --release -v --split-per-abi
